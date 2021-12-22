@@ -1,3 +1,4 @@
+import googlesearch
 import pyttsx3 #pip install pyttsx3
 import speech_recognition as sr #pip install speechRecognition
 import datetime
@@ -5,6 +6,7 @@ import wikipedia #pip install wikipedia
 import webbrowser
 import os
 import smtplib
+from googlesearch import search
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -19,13 +21,15 @@ def speak(audio):
 
 def wishMe():
     hour = int(datetime.datetime.now().hour)
-    if hour>=0 and hour<12:
-        speak("Good Morning! I hope You Have a Good Today")
-        print("Good Morning! I hope You Have a Good Today")
+    if hour>=0 and hour<4:
+            speak("It Seems Really Urgent Because You Contacted Me On Midnight, Go On And Tell How Can I help You?")
+    if hour>=4 and hour<12:
+        speak("Good Morning! I hope You Have a Good Day Today")
+        print("Good Morning! I hope You Have a Good Day Today")
     elif hour>=12 and hour<18:
         speak("Good Afternoon!")   
         print("Good Afternoon!")   
-    else:
+    elif hour>=18 and hour<0:
         speak("Good Evening!")  
         print("Good Evening!")
     speak("Hello This Is Jarvis And You are My IRON MAN, Can You Please Tell Me How I can Help You?")   
@@ -56,7 +60,7 @@ def sendEmail(to, content):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
-    server.login('sarthak.sidhant@gmail.com', 'Anafebu3142-132') #there's really no use of testing my password becoz it must be changed by then why waste your time?
+    server.login('sarthak.sidhant@gmail.com', 'Sarthak@44') #there's really no use of testing my password becoz it must be changed by then why waste your time?
     server.sendmail('sarthak.sidhant@gmail.com', to, content)
     server.close()
 
@@ -74,7 +78,6 @@ if __name__ == "__main__":
             speak("According to Wikipedia")
             print(results)
             speak(results)
-
         elif 'open youtube' in query:
             webbrowser.open("youtube.com")
             print("looks like you want to watch some videos, Go on...")
@@ -89,35 +92,33 @@ if __name__ == "__main__":
             print("Opening Google...")
             speak("Oh! you want to have some time with the god Of information? Great! ")
             speak("Opening Google...")
-
         elif 'open stackoverflow' in query:
             webbrowser.open("stackoverflow.com")   
             print("What You Have An Error in Programming Again?")
             print("opening StackOverFlow....")
-
-        elif 'play music' in query:
-            music_dir = 'D:\\Non Critical\\songs\\Favorite Songs2'
+        elif 'music' in query:
+            music_dir = 'C:\\Users\\User\\Desktop\\project\\test'
             songs = os.listdir(music_dir)
             print(songs)    
             os.startfile(os.path.join(music_dir, songs[0]))
-
         elif 'time' in query:
             strTime = datetime.datetime.now().strftime("%H:%M:%S")    
             speak(f"Sir, the time is {strTime} and your watch is in your pocket, Wear it! you always keep asking for time and stupid stuff not realising you are wasting your time, Remember Time Is Important and its valuable dont waste it ")
-
+            speak(f"Sir, the time is {strTime} and your watch is in your pocket, Wear it! you always keep asking for time and stupid stuff not realising you are wasting your time, Remember Time Is Important and its valuable dont waste it ")
         elif 'open code' in query:
             codePath = "C:\\Users\\Haris\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
             os.startfile(codePath)
             speak("opening Visual Studio Code")
             print("opening Visual Studio Code")
-
         elif 'email to school' in query:
             try:
                 speak("Sure! What should I say then?")
-                content = takeCommand()
-                to = "info@dpsbokaro.com"    
+                print("Sure! What should I say then?")
+                content = input("What Email Should I Say")
+                to = "sarthaksidhantisopolice@gmail.com"    
                 sendEmail(to, content)
                 speak("Email has been sent!")
+                print("Email has been sent!")
             except Exception as e:
                 print(e)
                 speak("Sorry Sarthak, Cant Send The Email Right Now, Can You Try Again Later")    
@@ -140,6 +141,7 @@ if __name__ == "__main__":
             print("Jarvis is Turning Down")
             speak("Jarvis has left the chat")
             print("Jarvis has left the chat")
+            break
         elif 'you are bad'in query:
             print("i am really sorry if my system is bad, here you can write a feedback to the developer")
             print("sarthaksidhantofficial@gmail.com")
@@ -153,7 +155,7 @@ if __name__ == "__main__":
             print("sarthaksidhantofficial@gmail.com")
             speak("you made my day, thanks")
             speak("you can write a email to the developer thanking him, i was made by him!")
-        elif 'what can you do?'in query:    
+        elif 'what can you do'in query:    
             speak("I can Do Alot Of Things")
             print("I can Do Alot Of Things")
             speak("i can send emails (use : email address, content), open youtube (use: open youtube), search wikipedia (use: wikipedia, search content), open google (use : open google), open stack overflow (use: open Stackoverflow), Tell Time (use: time), Open Code (use: open code), Bunk Classes :P (version 2 - coming soon), Science Fiction Talks - Beta (use: execute operation 42), Feedback Pages : good (use: you are good), bad (use: you are bad), Discord Logs Tell The Use Of The Bot When Connected to the Internet (version 2 - coming soon) And Alot Of Cool Things To Come Sooner :D")          
@@ -161,9 +163,82 @@ if __name__ == "__main__":
         elif 'credits'in query:
             print("developed by SarthakSidhant (discord : Sarthak Sidhant#4374)")
             print("helped from the main project by code with harry")
-            print("runs on any laptop/computer just needs some lybraries installed")
-            
-            
-            
-            
-        
+            print("runs on any laptop/computer just needs some libraries installed")            
+        elif 'search' in query:
+            for i in search(query, tld="com", num=5, stop=5, pause=2):
+                speak("Here Are The Search Results:")
+                print(i)        
+        elif 'repeat' in query:
+            query = query.replace("repeat", "")
+            speak(query)
+            print(query)
+        elif "jarvis" in query:
+            speak("Yes Sir! Always Present At This Computer, You Need TO Give Me Commands")
+            print("Yes Sir! Always Present At This Computer, You Need TO Give Me Commands")
+        elif "email" in query:
+            try:
+                speak("Sure! What shall Be The Content?")
+                print("Sure! What shall Be The Content?")
+                content = takeCommand()
+                speak("Please Tell The Email Address I Should Send The Email To:   ")
+                to = input("Please Tell The Email Address I Should Send The Email To:  ")    
+                sendEmail(to, content)
+                speak("Email has been sent!")
+                print("Email has been sent!")
+            except Exception as e:
+                print(e)
+                speak("Sorry Sarthak, Cant Send The Email Right Now, Can You Try Again Later")
+                print("Sorry Sarthak, Cant Send The Email Right Now, Can You Try Again Later")
+            #A TRUE EDITH FUNCTION
+        elif "set target" in query:
+            speak("Sure! What shall Be The Target?")
+            print("Sure! What shall Be The Target?")
+            target = takeCommand()
+            speak("Are You Sure That You Want To Set The Target To " + target + "?")
+            print("Are You Sure That You Want To Set The Target To " + target + "?")
+            print("input yes or no")
+            conf=input("Y/N: ")
+            if conf=="yes" or conf=="y" or conf=="Yes" or conf=="Y" or conf=="YES" :
+                speak("Copy That!")
+                print("Copy That!")
+                speak("Target Set To: " + target)
+                print("Target Set To: " + target)
+                speak("Initating Start Of Attack")
+                print("Initating Start Of Attack")
+                speak("Intercept Point Determined")
+                print("Intercept Point Determined")
+                speak("Releasing Kill Vehicle")
+                print("Releasing Kill Vehicle")
+                speak("Drumroll Please")
+                print("Drumroll Please, BA DUM TSS")
+                speak("Kill Vehicle Released")
+                print("Kill Vehicle Released")
+                speak("Kill Vehicle Inbound")
+                print("Kill Vehicle Inbound")
+                speak("Kill Vehicle Approaching The Target")
+                print("Kill Vehicle Approaching The Target")
+                speak("Target 3 hundred meter From The Intercept Point")
+                print("Target 300m From The Intercept Point")
+                speak("Target 2 hundred meter From The Intercept Point")
+                print("Target 200m From The Intercept Point")
+                speak("Target 1 hundred meter From The Intercept Point")
+                print("Target 100m From The Intercept Point")
+                speak("Target fifty meter From The Intercept Point")
+                print("Target 50m From The Intercept Point")
+                speak("Target thirty meter From The Intercept Point")
+                print("Target 30m From The Intercept Point")
+                speak("Target twenty meter From The Intercept Point")
+                print("Target 20m From The Intercept Point")
+                speak("Target 10 meter From The Intercept Point")
+                print("Target 10m From The Intercept Point")
+                speak("Target 5 meter From The Intercept Point")
+                print("Target 5m From The Intercept Point")
+                speak("Target Destroyed")
+                print("Target Destroyed")
+                speak("Paying Last Rites To The Target aka: " + target)
+                print("Paying Last Rites To The Target aka: " + target)
+
+            else:
+                speak("Target Decline")
+                print("Target Decline")
+    
